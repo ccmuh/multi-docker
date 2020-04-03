@@ -12,10 +12,10 @@ script:
   - docker run -e CI=true ccmuh/react-test npm test 
 
 after_success:
-  - docker build -t ccmuh/multi-client -f ./client
-  - docker build -t ccmuh/multi-nginx -f ./nginx
-  - docker build -t ccmuh/multi-server -f ./server
-  - docker build -t ccmuh/multi-worker -f ./worker
+  - docker build -t ccmuh/multi-client ./client
+  - docker build -t ccmuh/multi-nginx ./nginx
+  - docker build -t ccmuh/multi-server ./server
+  - docker build -t ccmuh/multi-worker ./worker
 
   # Login in to docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
