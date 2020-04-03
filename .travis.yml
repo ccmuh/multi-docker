@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+  before_install:
+    # only testing react server code
+    - docker build -t ccmuh/react-test -f ./client/Dockerfile.dev ./client
+    # how do we make a test for worker code?
+
+script:
+  - docker run -e CI=true ccmuh/react-test npm test 
+
+after_success:
+  - docker build -t ccmuh/multi-client -f ./client
+  - docker build -t ccmuh/multi-nginx -f ./nginx
+  - docker build -t ccmuh/multi-server -f ./server
+  - docker build -t ccmuh/multi-worker -f ./worker
+
+  # Login in to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push them to docker hub
+  - docker push ccmuh/multi-client
+  - docker push ccmuh/multi-nginx
+  - docker push ccmuh/multi-server
+  - docker push ccmuh/multi-worker
