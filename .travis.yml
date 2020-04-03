@@ -3,10 +3,10 @@ sudo: required
 services:
   - docker
 
-  before_install:
-    # only testing react server code
-    - docker build -t ccmuh/react-test -f ./client/Dockerfile.dev ./client
-    # how do we make a test for worker code?
+before_install:
+  # only testing react server code
+  # how do we make a test for worker code?
+  - docker build -t ccmuh/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run -e CI=true ccmuh/react-test npm test 
